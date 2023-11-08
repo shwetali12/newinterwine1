@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block body %}
+<div class="container mt-5">
+    <div class="text-center py-5">
+        <div>
+            <a href="{% url 'create_offer' %}" class="btn btn-primary">create_offer</a>
+            <a href="{% url 'filter_offers' %}" class="btn btn-primary">Filter Offer</a>
+        </div>
+        <h2>Welcome </h2>
+        <table class="table table-bordered table-striped mt-3">
+            <thead>
+                <tr>
+                    <th>User</th>
+                    <th>Type</th>
+                    <th>Amount</th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                    
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+        <tbody>
+            {% for offer in all_offers %}
+                <tr>
+                    <td>{{ offer.user }}</td>
+
+                    <td>{{ offer.mytype }}</td>
+                    <td>{{ offer.amount }}</td>
+                    <td>{{ offer.start_date }}</td>
+                    <td>{{ offer.end_date }}</td>
+                    <td><a type="submit" class="btn btn-primary" href="{% url 'edit' offer.id %}">Edit</a></td>
+                    <td><a type="submit" class="btn btn-danger" href="{% url 'remove'  offer.id %}">Delete</a></td>
+                   
+
+                </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="7">No offer found.</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <!-- Display pagination links -->
+    <div class="pagination">
+        <span class="step-links">
+            {% if all_offers.has_previous %}
+                <a href="?page=1">&laquo; first</a>
+                <a href="?page={{ all_offers.previous_page_number }}">previous</a>
+            {% endif %}
+
+            <span class="current-page">{{ all_offers.number }} of {{ all_offers.paginator.num_pages }}</span>
+
+            {% if all_offers.has_next %}
+                <a href="?page={{ all_offers.next_page_number }}">next</a>
+                <a href="?page={{ all_offers.paginator.num_pages }}">last &raquo;</a>
+            {% endif %}
+        </span>
+    </div>
+    </div>
+   
+</div>
+{% endblock %}
